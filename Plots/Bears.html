@@ -1,0 +1,265 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 1400px;
+                 height: 750px;
+                 background-color: #ffffff;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+             #loadingBar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width: 1400px;
+                 height: 750px;
+                 background-color:rgba(200,200,200,0.8);
+                 -webkit-transition: all 0.5s ease;
+                 -moz-transition: all 0.5s ease;
+                 -ms-transition: all 0.5s ease;
+                 -o-transition: all 0.5s ease;
+                 transition: all 0.5s ease;
+                 opacity:1;
+             }
+
+             #bar {
+                 position:absolute;
+                 top:0px;
+                 left:0px;
+                 width:20px;
+                 height:20px;
+                 margin:auto auto auto auto;
+                 border-radius:11px;
+                 border:2px solid rgba(30,30,30,0.05);
+                 background: rgb(0, 173, 246); /* Old browsers */
+                 box-shadow: 2px 0px 4px rgba(0,0,0,0.4);
+             }
+
+             #border {
+                 position:absolute;
+                 top:10px;
+                 left:10px;
+                 width:500px;
+                 height:23px;
+                 margin:auto auto auto auto;
+                 box-shadow: 0px 0px 4px rgba(0,0,0,0.2);
+                 border-radius:10px;
+             }
+
+             #text {
+                 position:absolute;
+                 top:8px;
+                 left:530px;
+                 width:30px;
+                 height:50px;
+                 margin:auto auto auto auto;
+                 font-size:22px;
+                 color: #000000;
+             }
+
+             div.outerBorder {
+                 position:relative;
+                 top:400px;
+                 width:600px;
+                 height:44px;
+                 margin:auto auto auto auto;
+                 border:8px solid rgba(0,0,0,0.1);
+                 background: rgb(252,252,252); /* Old browsers */
+                 background: -moz-linear-gradient(top,  rgba(252,252,252,1) 0%, rgba(237,237,237,1) 100%); /* FF3.6+ */
+                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,252,252,1)), color-stop(100%,rgba(237,237,237,1))); /* Chrome,Safari4+ */
+                 background: -webkit-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Chrome10+,Safari5.1+ */
+                 background: -o-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* Opera 11.10+ */
+                 background: -ms-linear-gradient(top,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* IE10+ */
+                 background: linear-gradient(to bottom,  rgba(252,252,252,1) 0%,rgba(237,237,237,1) 100%); /* W3C */
+                 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfcfc', endColorstr='#ededed',GradientType=0 ); /* IE6-9 */
+                 border-radius:72px;
+                 box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+             }
+             
+
+             
+             #config {
+                 float: left;
+                 width: 400px;
+                 height: 600px;
+             }
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+            <div id="loadingBar">
+              <div class="outerBorder">
+                <div id="text">0%</div>
+                <div id="border">
+                  <div id="bar"></div>
+                </div>
+              </div>
+            </div>
+        
+        
+            <div id="config"></div>
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"group": 1, "id": "Customers", "label": "Customers", "shape": "dot", "size": 10, "title": "Customers"}, {"color": "#97c2fc", "id": "placing", "label": "placing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "less", "label": "less", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "local", "label": "local", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "make", "label": "make", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "difficult", "label": "difficult", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "raise", "label": "raise", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "regional", "label": "regional", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "putting", "label": "putting", "shape": "dot", "size": 10}, {"group": 1, "id": "emphasis", "label": "emphasis", "shape": "dot", "size": 10, "title": "emphasis"}, {"group": 1, "id": "branches", "label": "branches", "shape": "dot", "size": 10, "title": "branches"}, {"group": 1, "id": "Virgin", "label": "Virgin", "shape": "dot", "size": 10, "title": "Virgin"}, {"group": 1, "id": "deposits", "label": "deposits", "shape": "dot", "size": 10, "title": "deposits"}, {"group": 1, "id": "markets", "label": "markets", "shape": "dot", "size": 10, "title": "markets"}, {"group": 1, "id": "pressure", "label": "pressure", "shape": "dot", "size": 10, "title": "pressure"}, {"group": 1, "id": "funding", "label": "funding", "shape": "dot", "size": 10, "title": "funding"}, {"group": 1, "id": "costs", "label": "costs", "shape": "dot", "size": 10, "title": "costs"}, {"group": 1, "id": "Cost", "label": "Cost", "shape": "dot", "size": 10, "title": "Cost"}, {"color": "#97c2fc", "id": "be", "label": "be", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "offset", "label": "offset", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "meet", "label": "meet", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "rising", "label": "rising", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "regulatory", "label": "regulatory", "shape": "dot", "size": 10}, {"group": 1, "id": "savings", "label": "savings", "shape": "dot", "size": 10, "title": "savings"}, {"group": 1, "id": "efficiency", "label": "efficiency", "shape": "dot", "size": 10, "title": "efficiency"}, {"group": 1, "id": "gains", "label": "gains", "shape": "dot", "size": 10, "title": "gains"}, {"group": 1, "id": "investment", "label": "investment", "shape": "dot", "size": 10, "title": "investment"}, {"group": 1, "id": "technology", "label": "technology", "shape": "dot", "size": 10, "title": "technology"}, {"group": 1, "id": "expectations", "label": "expectations", "shape": "dot", "size": 10, "title": "expectations"}, {"group": 1, "id": "requirements", "label": "requirements", "shape": "dot", "size": 10, "title": "requirements"}, {"group": 1, "id": "Qube", "label": "Qube", "shape": "dot", "size": 10, "title": "Qube"}, {"group": 1, "id": "prospects", "label": "prospects", "shape": "dot", "size": 10, "title": "prospects"}, {"group": 1, "id": "cash", "label": "cash", "shape": "dot", "size": 10, "title": "cash"}, {"group": 1, "id": "flow", "label": "flow", "shape": "dot", "size": 10, "title": "flow"}, {"group": 1, "id": "deterioration", "label": "deterioration", "shape": "dot", "size": 10, "title": "deterioration"}, {"group": 1, "id": "conditions", "label": "conditions", "shape": "dot", "size": 10, "title": "conditions"}, {"group": 1, "id": "ratio", "label": "ratio", "shape": "dot", "size": 10, "title": "ratio"}, {"group": 1, "id": "lack", "label": "lack", "shape": "dot", "size": 10, "title": "lack"}, {"group": 1, "id": "footprint", "label": "footprint", "shape": "dot", "size": 10, "title": "footprint"}, {"group": 1, "id": "implies", "label": "implies", "shape": "dot", "size": 10, "title": "implies"}, {"group": 1, "id": "exposure", "label": "exposure", "shape": "dot", "size": 10, "title": "exposure"}, {"group": 1, "id": "renewables", "label": "renewables", "shape": "dot", "size": 10, "title": "renewables"}, {"group": 1, "id": "backdrop", "label": "backdrop", "shape": "dot", "size": 10, "title": "backdrop"}, {"group": 1, "id": "clawback", "label": "clawback", "shape": "dot", "size": 10, "title": "clawback"}, {"group": 1, "id": "generation", "label": "generation", "shape": "dot", "size": 10, "title": "generation"}, {"group": 1, "id": "customer", "label": "customer", "shape": "dot", "size": 10, "title": "customer"}, {"color": "#97c2fc", "id": "is", "label": "is", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "nearing", "label": "nearing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "migrating", "label": "migrating", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "temporary", "label": "temporary", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "moving", "label": "moving", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "higher-priced", "label": "higher-priced", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fade", "label": "fade", "shape": "dot", "size": 10}, {"group": 1, "id": "business", "label": "business", "shape": "dot", "size": 10, "title": "business"}, {"group": 1, "id": "businesses", "label": "businesses", "shape": "dot", "size": 10, "title": "businesses"}, {"group": 1, "id": "price", "label": "price", "shape": "dot", "size": 10, "title": "price"}, {"group": 1, "id": "power", "label": "power", "shape": "dot", "size": 10, "title": "power"}, {"group": 1, "id": "revenue", "label": "revenue", "shape": "dot", "size": 10, "title": "revenue"}, {"group": 1, "id": "management", "label": "management", "shape": "dot", "size": 10, "title": "management"}, {"group": 1, "id": "software", "label": "software", "shape": "dot", "size": 10, "title": "software"}, {"group": 1, "id": "small-", "label": "small-", "shape": "dot", "size": 10, "title": "small-"}, {"group": 1, "id": "midsize", "label": "midsize", "shape": "dot", "size": 10, "title": "midsize"}, {"group": 1, "id": "industry", "label": "industry", "shape": "dot", "size": 10, "title": "industry"}, {"group": 1, "id": "Sage", "label": "Sage", "shape": "dot", "size": 10, "title": "Sage"}, {"group": 1, "id": "customers", "label": "customers", "shape": "dot", "size": 10, "title": "customers"}, {"group": 1, "id": "completion", "label": "completion", "shape": "dot", "size": 10, "title": "completion"}, {"group": 1, "id": "base", "label": "base", "shape": "dot", "size": 10, "title": "base"}, {"group": 1, "id": "cloud", "label": "cloud", "shape": "dot", "size": 10, "title": "cloud"}, {"group": 1, "id": "growth", "label": "growth", "shape": "dot", "size": 10, "title": "growth"}, {"group": 1, "id": "boost", "label": "boost", "shape": "dot", "size": 10, "title": "boost"}, {"group": 1, "id": "subscription", "label": "subscription", "shape": "dot", "size": 10, "title": "subscription"}, {"group": 1, "id": "contracts", "label": "contracts", "shape": "dot", "size": 10, "title": "contracts"}, {"group": 1, "id": "desire", "label": "desire", "shape": "dot", "size": 10, "title": "desire"}, {"color": "#97c2fc", "id": "grow", "label": "grow", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "result", "label": "result", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "taking", "label": "taking", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "desirable", "label": "desirable", "shape": "dot", "size": 10}, {"group": 1, "id": "credit", "label": "credit", "shape": "dot", "size": 10, "title": "credit"}, {"group": 1, "id": "borrowers", "label": "borrowers", "shape": "dot", "size": 10, "title": "borrowers"}, {"group": 1, "id": "share", "label": "share", "shape": "dot", "size": 10, "title": "share"}, {"color": "#97c2fc", "id": "gives", "label": "gives", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "puts", "label": "puts", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "weak", "label": "weak", "shape": "dot", "size": 10}, {"group": 1, "id": "structure", "label": "structure", "shape": "dot", "size": 10, "title": "structure"}, {"group": 1, "id": "company", "label": "company", "shape": "dot", "size": 10, "title": "company"}, {"group": 1, "id": "ownership", "label": "ownership", "shape": "dot", "size": 10, "title": "ownership"}, {"group": 1, "id": "Enel", "label": "Enel", "shape": "dot", "size": 10, "title": "Enel"}, {"group": 1, "id": "control", "label": "control", "shape": "dot", "size": 10, "title": "control"}, {"group": 1, "id": "board", "label": "board", "shape": "dot", "size": 10, "title": "board"}, {"group": 1, "id": "minority", "label": "minority", "shape": "dot", "size": 10, "title": "minority"}, {"group": 1, "id": "shareholders", "label": "shareholders", "shape": "dot", "size": 10, "title": "shareholders"}, {"group": 1, "id": "position", "label": "position", "shape": "dot", "size": 10, "title": "position"}, {"color": "#97c2fc", "id": "financial", "label": "financial", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "fragmented", "label": "fragmented", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "limiting", "label": "limiting", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "pricing", "label": "pricing", "shape": "dot", "size": 10}, {"group": 1, "id": "market", "label": "market", "shape": "dot", "size": 10, "title": "market"}, {"color": "#97c2fc", "id": "Increasing", "label": "Increasing", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "cloud-native", "label": "cloud-native", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "has", "label": "has", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "meant", "label": "meant", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "needs", "label": "needs", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "permanently", "label": "permanently", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "increase", "label": "increase", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "attract", "label": "attract", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "new", "label": "new", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "reducing", "label": "reducing", "shape": "dot", "size": 10}, {"group": 1, "id": "competition", "label": "competition", "shape": "dot", "size": 10, "title": "competition"}, {"group": 1, "id": "providers", "label": "providers", "shape": "dot", "size": 10, "title": "providers"}, {"group": 1, "id": "spending", "label": "spending", "shape": "dot", "size": 10, "title": "spending"}, {"group": 1, "id": "sales", "label": "sales", "shape": "dot", "size": 10, "title": "sales"}, {"group": 1, "id": "marketing", "label": "marketing", "shape": "dot", "size": 10, "title": "marketing"}, {"group": 1, "id": "margin", "label": "margin", "shape": "dot", "size": 10, "title": "margin"}, {"group": 1, "id": "potential", "label": "potential", "shape": "dot", "size": 10, "title": "potential"}, {"group": 1, "id": "bank", "label": "bank", "shape": "dot", "size": 10, "title": "bank"}, {"color": "#97c2fc", "id": "are", "label": "are", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "surrounding", "label": "surrounding", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "other", "label": "other", "shape": "dot", "size": 10}, {"group": 1, "id": "risk", "label": "risk", "shape": "dot", "size": 10, "title": "risk"}, {"group": 1, "id": "risks", "label": "risks", "shape": "dot", "size": 10, "title": "risks"}, {"group": 1, "id": "development", "label": "development", "shape": "dot", "size": 10, "title": "development"}, {"group": 1, "id": "Moorebank", "label": "Moorebank", "shape": "dot", "size": 10, "title": "Moorebank"}, {"group": 1, "id": "projects", "label": "projects", "shape": "dot", "size": 10, "title": "projects"}, {"group": 1, "id": "companies", "label": "companies", "shape": "dot", "size": 10, "title": "companies"}, {"color": "#97c2fc", "id": "corporate", "label": "corporate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "associate", "label": "associate", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "acquired", "label": "acquired", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "purchased", "label": "purchased", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "limits", "label": "limits", "shape": "dot", "size": 10}, {"group": 1, "id": "assets", "label": "assets", "shape": "dot", "size": 10, "title": "assets"}, {"group": 1, "id": "transparency", "label": "transparency", "shape": "dot", "size": 10, "title": "transparency"}, {"group": 1, "id": "strategy", "label": "strategy", "shape": "dot", "size": 10, "title": "strategy"}, {"color": "#97c2fc", "id": "focused", "label": "focused", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "adds", "label": "adds", "shape": "dot", "size": 10}, {"group": 1, "id": "acquisitions", "label": "acquisitions", "shape": "dot", "size": 10, "title": "acquisitions"}, {"group": 1, "id": "integration", "label": "integration", "shape": "dot", "size": 10, "title": "integration"}, {"color": "#97c2fc", "id": "long-term", "label": "long-term", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "attractive", "label": "attractive", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "cyclical", "label": "cyclical", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "affected", "label": "affected", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "economic", "label": "economic", "shape": "dot", "size": 10}, {"group": 1, "id": "P/E", "label": "P/E", "shape": "dot", "size": 10, "title": "P/E"}, {"color": "#97c2fc", "id": "trading", "label": "trading", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "high", "label": "high", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "hit", "label": "hit", "shape": "dot", "size": 10}, {"group": 1, "id": "disappointments", "label": "disappointments", "shape": "dot", "size": 10, "title": "disappointments"}, {"group": 1, "id": "hard", "label": "hard", "shape": "dot", "size": 10, "title": "hard"}, {"color": "#97c2fc", "id": "international", "label": "international", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "full", "label": "full", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "competitive", "label": "competitive", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Spanish", "label": "Spanish", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "adverse", "label": "adverse", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "evidenced", "label": "evidenced", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "low-carbon", "label": "low-carbon", "shape": "dot", "size": 10}, {"group": 1, "id": "countries", "label": "countries", "shape": "dot", "size": 10, "title": "countries"}, {"group": 1, "id": "regulation", "label": "regulation", "shape": "dot", "size": 10, "title": "regulation"}, {"group": 1, "id": "indexation", "label": "indexation", "shape": "dot", "size": 10, "title": "indexation"}, {"group": 1, "id": "networks", "label": "networks", "shape": "dot", "size": 10, "title": "networks"}, {"group": 1, "id": "inflation", "label": "inflation", "shape": "dot", "size": 10, "title": "inflation"}, {"color": "#97c2fc", "id": "most", "label": "most", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "Western", "label": "Western", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "European", "label": "European", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "does", "label": "does", "shape": "dot", "size": 10}, {"color": "#97c2fc", "id": "allow", "label": "allow", "shape": "dot", "size": 10}, {"group": 1, "id": "levy", "label": "levy", "shape": "dot", "size": 10, "title": "levy"}]);
+                  edges = new vis.DataSet([{"from": "Customers", "to": "placing", "width": 1}, {"from": "Customers", "to": "less", "width": 1}, {"from": "Customers", "to": "local", "width": 1}, {"from": "Customers", "to": "make", "width": 1}, {"from": "Customers", "to": "difficult", "width": 1}, {"from": "Customers", "to": "raise", "width": 1}, {"from": "Customers", "to": "regional", "width": 1}, {"from": "Customers", "to": "putting", "width": 1}, {"from": "placing", "to": "emphasis", "width": 1}, {"from": "placing", "to": "branches", "width": 1}, {"from": "placing", "to": "Virgin", "width": 1}, {"from": "placing", "to": "deposits", "width": 1}, {"from": "placing", "to": "markets", "width": 1}, {"from": "placing", "to": "pressure", "width": 1}, {"from": "placing", "to": "funding", "width": 1}, {"from": "placing", "to": "costs", "width": 1}, {"from": "less", "to": "emphasis", "width": 1}, {"from": "less", "to": "branches", "width": 1}, {"from": "less", "to": "Virgin", "width": 1}, {"from": "less", "to": "deposits", "width": 1}, {"from": "less", "to": "markets", "width": 1}, {"from": "less", "to": "pressure", "width": 1}, {"from": "less", "to": "funding", "width": 1}, {"from": "less", "to": "costs", "width": 1}, {"from": "local", "to": "emphasis", "width": 1}, {"from": "local", "to": "branches", "width": 1}, {"from": "local", "to": "Virgin", "width": 1}, {"from": "local", "to": "deposits", "width": 1}, {"from": "local", "to": "markets", "width": 1}, {"from": "local", "to": "pressure", "width": 1}, {"from": "local", "to": "funding", "width": 1}, {"from": "local", "to": "costs", "width": 1}, {"from": "make", "to": "emphasis", "width": 1}, {"from": "make", "to": "branches", "width": 1}, {"from": "make", "to": "Virgin", "width": 1}, {"from": "make", "to": "deposits", "width": 1}, {"from": "make", "to": "markets", "width": 1}, {"from": "make", "to": "pressure", "width": 1}, {"from": "make", "to": "funding", "width": 1}, {"from": "make", "to": "costs", "width": 1}, {"from": "difficult", "to": "emphasis", "width": 1}, {"from": "difficult", "to": "branches", "width": 1}, {"from": "difficult", "to": "Virgin", "width": 1}, {"from": "difficult", "to": "deposits", "width": 1}, {"from": "difficult", "to": "markets", "width": 1}, {"from": "difficult", "to": "pressure", "width": 1}, {"from": "difficult", "to": "funding", "width": 1}, {"from": "difficult", "to": "costs", "width": 1}, {"from": "raise", "to": "emphasis", "width": 1}, {"from": "raise", "to": "branches", "width": 1}, {"from": "raise", "to": "Virgin", "width": 1}, {"from": "raise", "to": "deposits", "width": 1}, {"from": "raise", "to": "markets", "width": 1}, {"from": "raise", "to": "pressure", "width": 1}, {"from": "raise", "to": "funding", "width": 1}, {"from": "raise", "to": "costs", "width": 1}, {"from": "regional", "to": "emphasis", "width": 1}, {"from": "regional", "to": "branches", "width": 1}, {"from": "regional", "to": "Virgin", "width": 1}, {"from": "regional", "to": "deposits", "width": 1}, {"from": "regional", "to": "markets", "width": 1}, {"from": "regional", "to": "pressure", "width": 1}, {"from": "regional", "to": "funding", "width": 1}, {"from": "regional", "to": "costs", "width": 1}, {"from": "putting", "to": "emphasis", "width": 1}, {"from": "putting", "to": "branches", "width": 1}, {"from": "putting", "to": "Virgin", "width": 1}, {"from": "putting", "to": "deposits", "width": 1}, {"from": "putting", "to": "markets", "width": 1}, {"from": "putting", "to": "pressure", "width": 1}, {"from": "putting", "to": "funding", "width": 1}, {"from": "putting", "to": "costs", "width": 1}, {"from": "Cost", "to": "be", "width": 1}, {"from": "Cost", "to": "offset", "width": 1}, {"from": "Cost", "to": "meet", "width": 1}, {"from": "Cost", "to": "rising", "width": 1}, {"from": "Cost", "to": "regulatory", "width": 1}, {"from": "be", "to": "savings", "width": 1}, {"from": "be", "to": "efficiency", "width": 1}, {"from": "be", "to": "gains", "width": 1}, {"from": "be", "to": "investment", "width": 1}, {"from": "be", "to": "technology", "width": 1}, {"from": "be", "to": "expectations", "width": 1}, {"from": "be", "to": "requirements", "width": 1}, {"from": "be", "to": "Qube", "width": 1}, {"from": "be", "to": "prospects", "width": 1}, {"from": "be", "to": "cash", "width": 1}, {"from": "be", "to": "flow", "width": 1}, {"from": "be", "to": "deterioration", "width": 1}, {"from": "be", "to": "conditions", "width": 1}, {"from": "offset", "to": "savings", "width": 1}, {"from": "offset", "to": "efficiency", "width": 1}, {"from": "offset", "to": "gains", "width": 1}, {"from": "offset", "to": "investment", "width": 1}, {"from": "offset", "to": "technology", "width": 1}, {"from": "offset", "to": "expectations", "width": 1}, {"from": "offset", "to": "requirements", "width": 1}, {"from": "meet", "to": "savings", "width": 1}, {"from": "meet", "to": "efficiency", "width": 1}, {"from": "meet", "to": "gains", "width": 1}, {"from": "meet", "to": "investment", "width": 1}, {"from": "meet", "to": "technology", "width": 1}, {"from": "meet", "to": "expectations", "width": 1}, {"from": "meet", "to": "requirements", "width": 1}, {"from": "rising", "to": "savings", "width": 1}, {"from": "rising", "to": "efficiency", "width": 1}, {"from": "rising", "to": "gains", "width": 1}, {"from": "rising", "to": "investment", "width": 1}, {"from": "rising", "to": "technology", "width": 1}, {"from": "rising", "to": "expectations", "width": 1}, {"from": "rising", "to": "requirements", "width": 1}, {"from": "regulatory", "to": "savings", "width": 1}, {"from": "regulatory", "to": "efficiency", "width": 1}, {"from": "regulatory", "to": "gains", "width": 1}, {"from": "regulatory", "to": "investment", "width": 1}, {"from": "regulatory", "to": "technology", "width": 1}, {"from": "regulatory", "to": "expectations", "width": 1}, {"from": "regulatory", "to": "requirements", "width": 1}, {"from": "regulatory", "to": "ratio", "width": 1}, {"from": "regulatory", "to": "lack", "width": 1}, {"from": "regulatory", "to": "footprint", "width": 1}, {"from": "regulatory", "to": "implies", "width": 1}, {"from": "regulatory", "to": "exposure", "width": 1}, {"from": "regulatory", "to": "renewables", "width": 1}, {"from": "regulatory", "to": "backdrop", "width": 1}, {"from": "regulatory", "to": "clawback", "width": 1}, {"from": "regulatory", "to": "generation", "width": 1}, {"from": "customer", "to": "is", "width": 1}, {"from": "customer", "to": "nearing", "width": 1}, {"from": "customer", "to": "migrating", "width": 1}, {"from": "customer", "to": "temporary", "width": 1}, {"from": "customer", "to": "moving", "width": 1}, {"from": "customer", "to": "higher-priced", "width": 1}, {"from": "customer", "to": "fade", "width": 1}, {"from": "is", "to": "business", "width": 1}, {"from": "is", "to": "businesses", "width": 1}, {"from": "is", "to": "price", "width": 1}, {"from": "is", "to": "power", "width": 1}, {"from": "is", "to": "revenue", "width": 1}, {"from": "is", "to": "management", "width": 1}, {"from": "is", "to": "software", "width": 1}, {"from": "is", "to": "small-", "width": 1}, {"from": "is", "to": "midsize", "width": 1}, {"from": "is", "to": "industry", "width": 1}, {"from": "is", "to": "Sage", "width": 1}, {"from": "is", "to": "customers", "width": 1}, {"from": "is", "to": "completion", "width": 1}, {"from": "is", "to": "base", "width": 1}, {"from": "is", "to": "cloud", "width": 1}, {"from": "is", "to": "growth", "width": 1}, {"from": "is", "to": "boost", "width": 1}, {"from": "is", "to": "subscription", "width": 1}, {"from": "is", "to": "contracts", "width": 1}, {"from": "nearing", "to": "price", "width": 1}, {"from": "nearing", "to": "revenue", "width": 1}, {"from": "nearing", "to": "Sage", "width": 1}, {"from": "nearing", "to": "customers", "width": 1}, {"from": "nearing", "to": "completion", "width": 1}, {"from": "nearing", "to": "base", "width": 1}, {"from": "nearing", "to": "cloud", "width": 1}, {"from": "nearing", "to": "growth", "width": 1}, {"from": "nearing", "to": "boost", "width": 1}, {"from": "nearing", "to": "subscription", "width": 1}, {"from": "nearing", "to": "contracts", "width": 1}, {"from": "migrating", "to": "price", "width": 1}, {"from": "migrating", "to": "revenue", "width": 1}, {"from": "migrating", "to": "Sage", "width": 1}, {"from": "migrating", "to": "customers", "width": 1}, {"from": "migrating", "to": "completion", "width": 1}, {"from": "migrating", "to": "base", "width": 1}, {"from": "migrating", "to": "cloud", "width": 1}, {"from": "migrating", "to": "growth", "width": 1}, {"from": "migrating", "to": "boost", "width": 1}, {"from": "migrating", "to": "subscription", "width": 1}, {"from": "migrating", "to": "contracts", "width": 1}, {"from": "temporary", "to": "price", "width": 1}, {"from": "temporary", "to": "revenue", "width": 1}, {"from": "temporary", "to": "Sage", "width": 1}, {"from": "temporary", "to": "customers", "width": 1}, {"from": "temporary", "to": "completion", "width": 1}, {"from": "temporary", "to": "base", "width": 1}, {"from": "temporary", "to": "cloud", "width": 1}, {"from": "temporary", "to": "growth", "width": 1}, {"from": "temporary", "to": "boost", "width": 1}, {"from": "temporary", "to": "subscription", "width": 1}, {"from": "temporary", "to": "contracts", "width": 1}, {"from": "moving", "to": "price", "width": 1}, {"from": "moving", "to": "revenue", "width": 1}, {"from": "moving", "to": "Sage", "width": 1}, {"from": "moving", "to": "customers", "width": 1}, {"from": "moving", "to": "completion", "width": 1}, {"from": "moving", "to": "base", "width": 1}, {"from": "moving", "to": "cloud", "width": 1}, {"from": "moving", "to": "growth", "width": 1}, {"from": "moving", "to": "boost", "width": 1}, {"from": "moving", "to": "subscription", "width": 1}, {"from": "moving", "to": "contracts", "width": 1}, {"from": "higher-priced", "to": "price", "width": 1}, {"from": "higher-priced", "to": "revenue", "width": 1}, {"from": "higher-priced", "to": "Sage", "width": 1}, {"from": "higher-priced", "to": "customers", "width": 1}, {"from": "higher-priced", "to": "completion", "width": 1}, {"from": "higher-priced", "to": "base", "width": 1}, {"from": "higher-priced", "to": "cloud", "width": 1}, {"from": "higher-priced", "to": "growth", "width": 1}, {"from": "higher-priced", "to": "boost", "width": 1}, {"from": "higher-priced", "to": "subscription", "width": 1}, {"from": "higher-priced", "to": "contracts", "width": 1}, {"from": "fade", "to": "price", "width": 1}, {"from": "fade", "to": "revenue", "width": 1}, {"from": "fade", "to": "Sage", "width": 1}, {"from": "fade", "to": "customers", "width": 1}, {"from": "fade", "to": "completion", "width": 1}, {"from": "fade", "to": "base", "width": 1}, {"from": "fade", "to": "cloud", "width": 1}, {"from": "fade", "to": "growth", "width": 1}, {"from": "fade", "to": "boost", "width": 1}, {"from": "fade", "to": "subscription", "width": 1}, {"from": "fade", "to": "contracts", "width": 1}, {"from": "desire", "to": "grow", "width": 1}, {"from": "desire", "to": "result", "width": 1}, {"from": "desire", "to": "taking", "width": 1}, {"from": "desire", "to": "desirable", "width": 1}, {"from": "grow", "to": "credit", "width": 1}, {"from": "grow", "to": "borrowers", "width": 1}, {"from": "result", "to": "credit", "width": 1}, {"from": "result", "to": "borrowers", "width": 1}, {"from": "taking", "to": "credit", "width": 1}, {"from": "taking", "to": "borrowers", "width": 1}, {"from": "desirable", "to": "credit", "width": 1}, {"from": "desirable", "to": "borrowers", "width": 1}, {"from": "share", "to": "gives", "width": 1}, {"from": "share", "to": "puts", "width": 1}, {"from": "share", "to": "weak", "width": 1}, {"from": "gives", "to": "structure", "width": 1}, {"from": "gives", "to": "company", "width": 1}, {"from": "gives", "to": "ownership", "width": 1}, {"from": "gives", "to": "Enel", "width": 1}, {"from": "gives", "to": "control", "width": 1}, {"from": "gives", "to": "board", "width": 1}, {"from": "gives", "to": "minority", "width": 1}, {"from": "gives", "to": "shareholders", "width": 1}, {"from": "gives", "to": "position", "width": 1}, {"from": "puts", "to": "structure", "width": 1}, {"from": "puts", "to": "company", "width": 1}, {"from": "puts", "to": "ownership", "width": 1}, {"from": "puts", "to": "Enel", "width": 1}, {"from": "puts", "to": "control", "width": 1}, {"from": "puts", "to": "board", "width": 1}, {"from": "puts", "to": "minority", "width": 1}, {"from": "puts", "to": "shareholders", "width": 1}, {"from": "puts", "to": "position", "width": 1}, {"from": "weak", "to": "structure", "width": 1}, {"from": "weak", "to": "company", "width": 1}, {"from": "weak", "to": "ownership", "width": 1}, {"from": "weak", "to": "Enel", "width": 1}, {"from": "weak", "to": "control", "width": 1}, {"from": "weak", "to": "board", "width": 1}, {"from": "weak", "to": "minority", "width": 1}, {"from": "weak", "to": "shareholders", "width": 1}, {"from": "weak", "to": "position", "width": 1}, {"from": "business", "to": "financial", "width": 1}, {"from": "business", "to": "fragmented", "width": 1}, {"from": "business", "to": "limiting", "width": 1}, {"from": "business", "to": "pricing", "width": 1}, {"from": "financial", "to": "businesses", "width": 1}, {"from": "financial", "to": "power", "width": 1}, {"from": "financial", "to": "management", "width": 1}, {"from": "financial", "to": "software", "width": 1}, {"from": "financial", "to": "small-", "width": 1}, {"from": "financial", "to": "midsize", "width": 1}, {"from": "financial", "to": "industry", "width": 1}, {"from": "fragmented", "to": "businesses", "width": 1}, {"from": "fragmented", "to": "power", "width": 1}, {"from": "fragmented", "to": "management", "width": 1}, {"from": "fragmented", "to": "software", "width": 1}, {"from": "fragmented", "to": "small-", "width": 1}, {"from": "fragmented", "to": "midsize", "width": 1}, {"from": "fragmented", "to": "industry", "width": 1}, {"from": "limiting", "to": "businesses", "width": 1}, {"from": "limiting", "to": "power", "width": 1}, {"from": "limiting", "to": "management", "width": 1}, {"from": "limiting", "to": "software", "width": 1}, {"from": "limiting", "to": "small-", "width": 1}, {"from": "limiting", "to": "midsize", "width": 1}, {"from": "limiting", "to": "industry", "width": 1}, {"from": "pricing", "to": "businesses", "width": 1}, {"from": "pricing", "to": "power", "width": 1}, {"from": "pricing", "to": "management", "width": 1}, {"from": "pricing", "to": "software", "width": 1}, {"from": "pricing", "to": "small-", "width": 1}, {"from": "pricing", "to": "midsize", "width": 1}, {"from": "pricing", "to": "industry", "width": 1}, {"from": "market", "to": "Increasing", "width": 1}, {"from": "market", "to": "cloud-native", "width": 1}, {"from": "market", "to": "has", "width": 1}, {"from": "market", "to": "meant", "width": 1}, {"from": "market", "to": "needs", "width": 1}, {"from": "market", "to": "permanently", "width": 1}, {"from": "market", "to": "increase", "width": 1}, {"from": "market", "to": "attract", "width": 1}, {"from": "market", "to": "new", "width": 1}, {"from": "market", "to": "reducing", "width": 1}, {"from": "Increasing", "to": "competition", "width": 1}, {"from": "Increasing", "to": "providers", "width": 1}, {"from": "Increasing", "to": "spending", "width": 1}, {"from": "Increasing", "to": "sales", "width": 1}, {"from": "Increasing", "to": "marketing", "width": 1}, {"from": "Increasing", "to": "margin", "width": 1}, {"from": "Increasing", "to": "potential", "width": 1}, {"from": "cloud-native", "to": "competition", "width": 1}, {"from": "cloud-native", "to": "providers", "width": 1}, {"from": "cloud-native", "to": "spending", "width": 1}, {"from": "cloud-native", "to": "sales", "width": 1}, {"from": "cloud-native", "to": "marketing", "width": 1}, {"from": "cloud-native", "to": "margin", "width": 1}, {"from": "cloud-native", "to": "potential", "width": 1}, {"from": "has", "to": "competition", "width": 1}, {"from": "has", "to": "providers", "width": 1}, {"from": "has", "to": "spending", "width": 1}, {"from": "has", "to": "sales", "width": 1}, {"from": "has", "to": "marketing", "width": 1}, {"from": "has", "to": "margin", "width": 1}, {"from": "has", "to": "potential", "width": 1}, {"from": "meant", "to": "competition", "width": 1}, {"from": "meant", "to": "providers", "width": 1}, {"from": "meant", "to": "spending", "width": 1}, {"from": "meant", "to": "sales", "width": 1}, {"from": "meant", "to": "marketing", "width": 1}, {"from": "meant", "to": "margin", "width": 1}, {"from": "meant", "to": "potential", "width": 1}, {"from": "needs", "to": "competition", "width": 1}, {"from": "needs", "to": "providers", "width": 1}, {"from": "needs", "to": "spending", "width": 1}, {"from": "needs", "to": "sales", "width": 1}, {"from": "needs", "to": "marketing", "width": 1}, {"from": "needs", "to": "margin", "width": 1}, {"from": "needs", "to": "potential", "width": 1}, {"from": "permanently", "to": "competition", "width": 1}, {"from": "permanently", "to": "providers", "width": 1}, {"from": "permanently", "to": "spending", "width": 1}, {"from": "permanently", "to": "sales", "width": 1}, {"from": "permanently", "to": "marketing", "width": 1}, {"from": "permanently", "to": "margin", "width": 1}, {"from": "permanently", "to": "potential", "width": 1}, {"from": "increase", "to": "competition", "width": 1}, {"from": "increase", "to": "providers", "width": 1}, {"from": "increase", "to": "spending", "width": 1}, {"from": "increase", "to": "sales", "width": 1}, {"from": "increase", "to": "marketing", "width": 1}, {"from": "increase", "to": "margin", "width": 1}, {"from": "increase", "to": "potential", "width": 1}, {"from": "attract", "to": "competition", "width": 1}, {"from": "attract", "to": "providers", "width": 1}, {"from": "attract", "to": "spending", "width": 1}, {"from": "attract", "to": "sales", "width": 1}, {"from": "attract", "to": "marketing", "width": 1}, {"from": "attract", "to": "margin", "width": 1}, {"from": "attract", "to": "potential", "width": 1}, {"from": "new", "to": "competition", "width": 1}, {"from": "new", "to": "providers", "width": 1}, {"from": "new", "to": "spending", "width": 1}, {"from": "new", "to": "sales", "width": 1}, {"from": "new", "to": "marketing", "width": 1}, {"from": "new", "to": "margin", "width": 1}, {"from": "new", "to": "potential", "width": 1}, {"from": "reducing", "to": "competition", "width": 1}, {"from": "reducing", "to": "providers", "width": 1}, {"from": "reducing", "to": "spending", "width": 1}, {"from": "reducing", "to": "sales", "width": 1}, {"from": "reducing", "to": "marketing", "width": 1}, {"from": "reducing", "to": "margin", "width": 1}, {"from": "reducing", "to": "potential", "width": 1}, {"from": "bank", "to": "are", "width": 1}, {"from": "bank", "to": "surrounding", "width": 1}, {"from": "bank", "to": "other", "width": 1}, {"from": "are", "to": "risk", "width": 1}, {"from": "are", "to": "Qube", "width": 1}, {"from": "are", "to": "prospects", "width": 1}, {"from": "are", "to": "cash", "width": 1}, {"from": "are", "to": "flow", "width": 1}, {"from": "are", "to": "deterioration", "width": 1}, {"from": "are", "to": "conditions", "width": 1}, {"from": "are", "to": "risks", "width": 1}, {"from": "are", "to": "development", "width": 1}, {"from": "are", "to": "Moorebank", "width": 1}, {"from": "are", "to": "projects", "width": 1}, {"from": "surrounding", "to": "risk", "width": 1}, {"from": "surrounding", "to": "risks", "width": 1}, {"from": "surrounding", "to": "development", "width": 1}, {"from": "surrounding", "to": "Moorebank", "width": 1}, {"from": "surrounding", "to": "projects", "width": 1}, {"from": "other", "to": "risk", "width": 1}, {"from": "other", "to": "risks", "width": 1}, {"from": "other", "to": "development", "width": 1}, {"from": "other", "to": "Moorebank", "width": 1}, {"from": "other", "to": "projects", "width": 1}, {"from": "companies", "to": "corporate", "width": 1}, {"from": "companies", "to": "associate", "width": 1}, {"from": "companies", "to": "acquired", "width": 1}, {"from": "companies", "to": "purchased", "width": 1}, {"from": "companies", "to": "limits", "width": 1}, {"from": "corporate", "to": "assets", "width": 1}, {"from": "corporate", "to": "transparency", "width": 1}, {"from": "associate", "to": "assets", "width": 1}, {"from": "associate", "to": "transparency", "width": 1}, {"from": "acquired", "to": "assets", "width": 1}, {"from": "acquired", "to": "transparency", "width": 1}, {"from": "purchased", "to": "assets", "width": 1}, {"from": "purchased", "to": "transparency", "width": 1}, {"from": "limits", "to": "assets", "width": 1}, {"from": "limits", "to": "transparency", "width": 1}, {"from": "strategy", "to": "focused", "width": 1}, {"from": "strategy", "to": "adds", "width": 1}, {"from": "focused", "to": "acquisitions", "width": 1}, {"from": "focused", "to": "integration", "width": 1}, {"from": "adds", "to": "acquisitions", "width": 1}, {"from": "adds", "to": "integration", "width": 1}, {"from": "Qube", "to": "long-term", "width": 1}, {"from": "Qube", "to": "attractive", "width": 1}, {"from": "Qube", "to": "cyclical", "width": 1}, {"from": "Qube", "to": "affected", "width": 1}, {"from": "Qube", "to": "economic", "width": 1}, {"from": "long-term", "to": "prospects", "width": 1}, {"from": "long-term", "to": "cash", "width": 1}, {"from": "long-term", "to": "flow", "width": 1}, {"from": "long-term", "to": "deterioration", "width": 1}, {"from": "long-term", "to": "conditions", "width": 1}, {"from": "attractive", "to": "prospects", "width": 1}, {"from": "attractive", "to": "cash", "width": 1}, {"from": "attractive", "to": "flow", "width": 1}, {"from": "attractive", "to": "deterioration", "width": 1}, {"from": "attractive", "to": "conditions", "width": 1}, {"from": "cyclical", "to": "prospects", "width": 1}, {"from": "cyclical", "to": "cash", "width": 1}, {"from": "cyclical", "to": "flow", "width": 1}, {"from": "cyclical", "to": "deterioration", "width": 1}, {"from": "cyclical", "to": "conditions", "width": 1}, {"from": "affected", "to": "prospects", "width": 1}, {"from": "affected", "to": "cash", "width": 1}, {"from": "affected", "to": "flow", "width": 1}, {"from": "affected", "to": "deterioration", "width": 1}, {"from": "affected", "to": "conditions", "width": 1}, {"from": "economic", "to": "prospects", "width": 1}, {"from": "economic", "to": "cash", "width": 1}, {"from": "economic", "to": "flow", "width": 1}, {"from": "economic", "to": "deterioration", "width": 1}, {"from": "economic", "to": "conditions", "width": 1}, {"from": "P/E", "to": "trading", "width": 1}, {"from": "P/E", "to": "high", "width": 1}, {"from": "P/E", "to": "hit", "width": 1}, {"from": "trading", "to": "disappointments", "width": 1}, {"from": "trading", "to": "hard", "width": 1}, {"from": "high", "to": "disappointments", "width": 1}, {"from": "high", "to": "hard", "width": 1}, {"from": "hit", "to": "disappointments", "width": 1}, {"from": "hit", "to": "hard", "width": 1}, {"from": "ratio", "to": "international", "width": 1}, {"from": "ratio", "to": "full", "width": 1}, {"from": "ratio", "to": "competitive", "width": 1}, {"from": "ratio", "to": "Spanish", "width": 1}, {"from": "ratio", "to": "adverse", "width": 1}, {"from": "ratio", "to": "evidenced", "width": 1}, {"from": "ratio", "to": "low-carbon", "width": 1}, {"from": "international", "to": "lack", "width": 1}, {"from": "international", "to": "footprint", "width": 1}, {"from": "international", "to": "implies", "width": 1}, {"from": "international", "to": "exposure", "width": 1}, {"from": "international", "to": "renewables", "width": 1}, {"from": "international", "to": "backdrop", "width": 1}, {"from": "international", "to": "clawback", "width": 1}, {"from": "international", "to": "generation", "width": 1}, {"from": "full", "to": "lack", "width": 1}, {"from": "full", "to": "footprint", "width": 1}, {"from": "full", "to": "implies", "width": 1}, {"from": "full", "to": "exposure", "width": 1}, {"from": "full", "to": "renewables", "width": 1}, {"from": "full", "to": "backdrop", "width": 1}, {"from": "full", "to": "clawback", "width": 1}, {"from": "full", "to": "generation", "width": 1}, {"from": "competitive", "to": "lack", "width": 1}, {"from": "competitive", "to": "footprint", "width": 1}, {"from": "competitive", "to": "implies", "width": 1}, {"from": "competitive", "to": "exposure", "width": 1}, {"from": "competitive", "to": "renewables", "width": 1}, {"from": "competitive", "to": "backdrop", "width": 1}, {"from": "competitive", "to": "clawback", "width": 1}, {"from": "competitive", "to": "generation", "width": 1}, {"from": "Spanish", "to": "lack", "width": 1}, {"from": "Spanish", "to": "footprint", "width": 1}, {"from": "Spanish", "to": "implies", "width": 1}, {"from": "Spanish", "to": "exposure", "width": 1}, {"from": "Spanish", "to": "renewables", "width": 1}, {"from": "Spanish", "to": "backdrop", "width": 1}, {"from": "Spanish", "to": "clawback", "width": 1}, {"from": "Spanish", "to": "generation", "width": 1}, {"from": "Spanish", "to": "countries", "width": 1}, {"from": "Spanish", "to": "regulation", "width": 1}, {"from": "Spanish", "to": "indexation", "width": 1}, {"from": "Spanish", "to": "networks", "width": 1}, {"from": "Spanish", "to": "inflation", "width": 1}, {"from": "adverse", "to": "lack", "width": 1}, {"from": "adverse", "to": "footprint", "width": 1}, {"from": "adverse", "to": "implies", "width": 1}, {"from": "adverse", "to": "exposure", "width": 1}, {"from": "adverse", "to": "renewables", "width": 1}, {"from": "adverse", "to": "backdrop", "width": 1}, {"from": "adverse", "to": "clawback", "width": 1}, {"from": "adverse", "to": "generation", "width": 1}, {"from": "evidenced", "to": "lack", "width": 1}, {"from": "evidenced", "to": "footprint", "width": 1}, {"from": "evidenced", "to": "implies", "width": 1}, {"from": "evidenced", "to": "exposure", "width": 1}, {"from": "evidenced", "to": "renewables", "width": 1}, {"from": "evidenced", "to": "backdrop", "width": 1}, {"from": "evidenced", "to": "clawback", "width": 1}, {"from": "evidenced", "to": "generation", "width": 1}, {"from": "low-carbon", "to": "lack", "width": 1}, {"from": "low-carbon", "to": "footprint", "width": 1}, {"from": "low-carbon", "to": "implies", "width": 1}, {"from": "low-carbon", "to": "exposure", "width": 1}, {"from": "low-carbon", "to": "renewables", "width": 1}, {"from": "low-carbon", "to": "backdrop", "width": 1}, {"from": "low-carbon", "to": "clawback", "width": 1}, {"from": "low-carbon", "to": "generation", "width": 1}, {"from": "countries", "to": "most", "width": 1}, {"from": "countries", "to": "Western", "width": 1}, {"from": "countries", "to": "European", "width": 1}, {"from": "countries", "to": "does", "width": 1}, {"from": "countries", "to": "allow", "width": 1}, {"from": "most", "to": "regulation", "width": 1}, {"from": "most", "to": "indexation", "width": 1}, {"from": "most", "to": "networks", "width": 1}, {"from": "most", "to": "inflation", "width": 1}, {"from": "Western", "to": "regulation", "width": 1}, {"from": "Western", "to": "indexation", "width": 1}, {"from": "Western", "to": "networks", "width": 1}, {"from": "Western", "to": "inflation", "width": 1}, {"from": "European", "to": "regulation", "width": 1}, {"from": "European", "to": "indexation", "width": 1}, {"from": "European", "to": "networks", "width": 1}, {"from": "European", "to": "inflation", "width": 1}, {"from": "does", "to": "regulation", "width": 1}, {"from": "does", "to": "indexation", "width": 1}, {"from": "does", "to": "networks", "width": 1}, {"from": "does", "to": "inflation", "width": 1}, {"from": "allow", "to": "regulation", "width": 1}, {"from": "allow", "to": "indexation", "width": 1}, {"from": "allow", "to": "networks", "width": 1}, {"from": "allow", "to": "inflation", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": true,
+        "filter": [
+            "physics"
+        ]
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+                  // if this network requires displaying the configure window,
+                  // put it in its div
+                  options.configure["container"] = document.getElementById("config");
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+                      network.on("stabilizationProgress", function(params) {
+                          document.getElementById('loadingBar').removeAttribute("style");
+                          var maxWidth = 496;
+                          var minWidth = 20;
+                          var widthFactor = params.iterations/params.total;
+                          var width = Math.max(minWidth,maxWidth * widthFactor);
+                          document.getElementById('bar').style.width = width + 'px';
+                          document.getElementById('text').innerHTML = Math.round(widthFactor*100) + '%';
+                      });
+                      network.once("stabilizationIterationsDone", function() {
+                          document.getElementById('text').innerHTML = '100%';
+                          document.getElementById('bar').style.width = '496px';
+                          document.getElementById('loadingBar').style.opacity = 0;
+                          // really clean the dom element
+                          setTimeout(function () {document.getElementById('loadingBar').style.display = 'none';}, 500);
+                      });
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
