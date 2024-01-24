@@ -2,6 +2,15 @@
 
 An university project on Natural Language Processing (NLP), Data Mining and Financial Analysis.
 
+# To Dos
+- How do we measure the actual and predicted trends (average of 30 or 60d adjusted close) (since sporadic jumps in the market are not relevant for long term investors which are the target group of readers); for trend 6% and for actual 2% to be considered sideways movement
+- Re-run all notebooks with png as export as well
+- Explain methodology for ROC Curves and why they are better (no even distribution etc)
+- Explain how the probabilities are used to improve the result and what else one could try in the future (Use the probability tuples of each column trained individually as input of a text classifier and use that as an input to a random forest/XGBoost... and then predict the labels)
+- Explain how data acquisition works
+- Add pictures
+
+
 ## Table of contents
 - [Introduction](#introduction)
 - [Data Sources](#data-sources)
