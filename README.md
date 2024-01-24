@@ -10,6 +10,10 @@ An university research project on Natural Language Processing (NLP), Data Mining
   - [Enrichment Data](#enrichment-data)
 - [Motivation and Objective](#motivation-and-objective)
 - [Approach](#approach)
+  - [Data Acquisition](#data-acquisition) 
+  - [Data Merge](#data-merge)
+  - [Data Analysis](#data-analysis)
+  - [Model Building and Benchmarking](#model-building-and-benchmarking)
 - [Results and Conclusion](#results-and-conclusion)
 
 
