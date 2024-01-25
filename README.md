@@ -52,7 +52,7 @@ ToDO:
 - Re-run all notebooks with png as export as well
 
 
-<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="200"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="200"/>
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="360"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="360"/>
 
 ## Model Building and Benchmarking
 The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the authors confidence and use of causal language. 
