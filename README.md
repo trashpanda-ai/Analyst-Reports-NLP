@@ -26,7 +26,7 @@ There are two data sources used in this project:
 1. [Yahoo Finance Python API (unofficial)](https://pypi.org/project/yfinance/)
 
 ## Main Data
-As our main data we utilize the Morningstar Equity Research containing both natural language and a quantifiable prediction. A more in depth description of the gathered variables can be found [here](Data/README.md).
+As our main data we utilize the Morningstar Equity Research containing both natural language and a quantifiable prediction. A more in depth description of the gathered variables can be found [here](Data/README.md). Currently, there are ~1600 reports, where some are pseudo-duplicates (same company, traded on different exchanges).
 
 ## Enrichment Data
 To better analyze the financial reports and identify the analysts accuracy, we utilize yahoo finance as enrichment data. We pull the OHLCV (Open High Low Close Volume) data on all different companies.
@@ -45,10 +45,13 @@ We design a parser [1. Data Acquisition](https://github.com/trashpanda-ai/Analys
 
 ## Data Merge
 Unfortunately the ```TickerSymbol``` of the analyst report is not specific enough. Thats why the Jupyter Notebook [2. Data Merge](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/2.%20Data%20Merge.ipynb) shows a detailed approach how to find the actual ticker symbols and since the yahoo API has reliability issues, this is executed in batches and the intermediate results are stored in 'TickerLists'.
+
 ## Data Analysis
 The Jupyter Notebook [3. Data Analysis](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/3.%20Data%20Analysis.ipynb) shows a preliminary and superficial approach how to design targets (like accuracy) and features (metrics based on text) and their dedicated correlations.
 ToDO:
 - Re-run all notebooks with png as export as well
+
+![image](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png)
 
 ## Model Building and Benchmarking
 The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the authors confidence and use of causal language. 
