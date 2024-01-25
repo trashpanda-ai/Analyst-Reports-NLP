@@ -30,6 +30,70 @@ The Analyst Reports are parsed from the british Morningstar website and contain 
 - ```Profile```: Short text on the company profile (summary). (String)
 - ```FinancialStrengthText```: Short text on the financial strength of the company (conclusion). (String)
 
+
+The data is in JSON and has the following format:
+
+```{
+    "0P00017BZR": {
+        "Index": 0,
+        "ParseDate": "24/11/2023",
+        "ID": "0P00017BZR",
+        "Title": "Virgin Money Meeting Short-Term Targets but Medium-Term ROE Targets ...",
+        "CompanyName": "Virgin Money UK PLC",
+        "TickerSymbol": "VMUK",
+        "Rating": 4,
+        "ReportDate": "24/11/2023",
+        "AuthorName": "Nathan Zaia",
+        "Price": {
+            "Value": 146.75,
+            "Currency": "GBX",
+            "Date": "23/11/2023"
+        },
+        "FairPrice": 210.0,
+        "Uncertainty": "High",
+        "EconomicMoat": "None",
+        "CostAllocation": "Standard",
+        "FinancialStrength": "",
+        "AnalystNote": {
+            "Date": "24/11/2023",
+            "Text": [
+                "Virgin Moneys fiscal 2023 preprovision profit missed ...",
+                "The earnings miss ...",
+                "Shares trade at a ..."
+            ]
+        },
+        "Bulls": [
+            "The combination of ... ",
+            "With a full-service product range, ...",
+            "Legacy customer conduct..."
+        ],
+        "Bears": [
+            "Customers placing less emphasis on ...",
+            "Cost savings ...",
+            "A desire to grow ... "
+        ],
+        "ResearchThesis": {
+            "Date": "24/11/2023",
+            "Text": [
+                "Virgin Money UK ...",
+                "Acquiring Virgin Money ...",
+                "We believe the bank's ...",
+                "Opportunities to ... ",
+                "The other key part ... "
+            ]
+        },
+        "MoatAnalysis": "Virgin Money UK, or Virgin, ... ",
+        "CapitalAllocation": "Our capital allocation rating ...",
+        "Overview": {
+            "Profile": "Virgin Money UK was ... ",
+            "FinancialStrength": "The capital structure ..."
+        }
+    },
+    ...
+}
+```
+
+
 ## Market Data
 The dedicated market data is pulled from yahoo finance via the (unofficial) Python API. We pulled daily (EOD) data on OHLCV (Open High Low Close Volume) 30 (or 60) days before and after the release of the reports. We also included the company's ```Sector```, the	```MarketCap```	and its traded ```Exchange```. Unfortunately the ```TickerSymbol``` of the analyst report is not specific enough. Thats why the [Jupyter notebook '2. Data Merge'](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/2.%20Data%20Merge.ipynb) shows a detailed approach how to find the actual ticker symbols.
 

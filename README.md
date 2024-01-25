@@ -40,7 +40,62 @@ But to be first - in this analogy of margin call - you need to either be located
 
 # Approach
 ## Data Acquisition
-We design a parser [1. Data Acquisition](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/1.%20Data%20Acquisition.ipynb) based on manual created cookies and gather a list of all available reports first. We then parse all reports from Morningstar.
+We design a parser [1. Data Acquisition](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/1.%20Data%20Acquisition.ipynb) based on manual created cookies and parse a list of all available reports. 
+
+We use the ```requests``` package to parse the landing page of all [reports](https://www.morningstar.co.uk/uk/research/equities/page/1?PageSize=2000) and save the table and underlying ```URL_ID```.
+
+To access the underlying links we generate them by concatenating them from partial links:
+```
+url1 =  'https://tools.morningstar.co.uk/ukp/stockreport/default.aspx?Site=uk&id='
+
+url2 = '&tab=15&isreport=true&LanguageId=en-GB&SecurityToken='
+
+url3 ='%5D3%5D0%5DE0WWE$$ALL'
+
+url = url1 + df["URL_ID"][i] + url2 + df["URL_ID"][i] + url3  
+
+```
+
+Since the reports are behind a login secured webpage, we either have to use a headless browser like ```selenium``` to completely automate the process or we use a semi-automatic approach and create cookies for the security handshake through manual login:
+
+1. Login with credentials on [Morningstar](https://www.morningstar.co.uk/)
+1. Navigate to [List of equity reports](https://www.morningstar.co.uk/uk/research/equities) 
+1. Activate network on browser in developer view 
+1. Click on any item in List of reports
+1. Search for get GET package to that site and right-click ```copy as cURL```
+1. Paste on website [curlconverter](https://curlconverter.com/python/) to get cookies and headers for Python ```request``` package
+1. Paste below the cookies and headers
+
+The result of this approach will have this form:
+
+```
+cookies = {
+    'PSI': 'S',
+    'RT_uk_BS': '+I7qdl0ruLBRlX6zrB8CNg==',
+    'RT_uk_CD': 'efNq51LXeHZjftQvvSJlDw==',
+    'RT_uk_GI': 'mGr7p+708bJo/rsmM3mC2saJLu1zqcp3rB+tAgdYcgcaeDBhQnzEInIY9N50/4tl',
+    'RT_uk_MD': 'PO5Mf2z103h9gY8gAJ+EDQ==',
+    'RT_uk_MS': '8X3mhE0/kf6o/dIJeMo7TA==',
+    'RT_uk_PS': '6G2wEmwHr8HiGZATAp96Mw==',
+    'ad-profile': '%7b%22AudienceType%22%3a21%2c%22UserType%22%3a2%2c%22PortofolioCreated%22%3a0%2c%22IsForObsr%22%3afalse%2c%22NeedRefresh%22%3atrue%2c%22NeedPopupAudienceBackfill%22%3afalse%2c%22EnableInvestmentInUK%22%3a-1%7d',
+    'RT_uk_LANG': 'en-GB',
+}
+
+headers = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Sec-Fetch-Site': 'same-site',
+    # 'Cookie': 'PSI=S; RT_uk_BS=+I7qdl0ruLBRlX6zrB8CNg==; RT_uk_CD=efNq51LXeHZjftQvvSJlDw==; RT_uk_GI=mGr7p+708bJo/rsmM3mC2saJLu1zqcp3rB+tAgdYcgcaeDBhQnzEInIY9N50/4tl; RT_uk_MD=PO5Mf2z103h9gY8gAJ+EDQ==; RT_uk_MS=8X3mhE0/kf6o/dIJeMo7TA==; RT_uk_PS=6G2wEmwHr8HiGZATAp96Mw==; ad-profile=%7b%22AudienceType%22%3a21%2c%22UserType%22%3a2%2c%22PortofolioCreated%22%3a0%2c%22IsForObsr%22%3afalse%2c%22NeedRefresh%22%3atrue%2c%22NeedPopupAudienceBackfill%22%3afalse%2c%22EnableInvestmentInUK%22%3a-1%7d; RT_uk_LANG=en-GB',
+    'Sec-Fetch-Dest': 'document',
+    # 'Accept-Encoding': 'gzip, deflate, br',
+    'Sec-Fetch-Mode': 'navigate',
+    'Host': 'tools.morningstar.co.uk',
+    'Accept-Language': 'en-gb',
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
+    'Referer': 'https://www.morningstar.co.uk/',
+    'Connection': 'keep-alive',
+}
+```
+
 - Explain how data acquisition works and How do we set up the connection via cookie handshake?
 
 ## Data Merge
@@ -64,7 +119,21 @@ ToDO:
 
 ## Model Building and Benchmarking
 The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the authors confidence and use of causal language. 
-TODO_ 
+
+
+In order to validate learned models -- here the Bayesian networks -- we compare predictions made from the model with previously separated test data. In this way, we can objectively evaluate them according to their predictive qualities. For this comparison, we utilise these fundamental principles:
+\newline \textit{Sensitivity} or true positive rate ($\mathrm{TPR}$) is derived from the true positives $\mathrm{TP}$,  i.e., the correctly identified positives $\mathrm{P}$ from the test set: 
+$
+\mathrm{TPR}=\frac{\mathrm{TP}}{\mathrm{P}}
+$
+\newline \textit{Specificity} or true negative rate ($\mathrm{TNR}$) is derived from the true negatives $\mathrm{TN}$,  i.e., the correctly identified negatives $\mathrm{N}$ from the test set: 
+$
+\mathrm{TNR}=\frac{\mathrm{TN}}{\mathrm{N}}
+$
+\newline By plotting both the sensitivity and specificity in relation, we obtain the so called Receiver Operating Curve (ROC). For the results of both measures 1 or 100\% is the optimum, and if the curve is the diagonal, we observed a random process.  In Figure~\ref{fig:exroc}, we can see some common examples of curves. In order to further summarise these evaluations, we can calculate the Area Under the Curve (AUC) to rank the models. Again, a value of 0.5 indicates a random process. 
+
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/main/Plots/ROC.png" alt="isolated" width="380"/> 
+
 - Explain methodology for ROC Curves and why they are better (no even distribution etc)
 - Explain how the probabilities are used to improve the result and what else one could try in the future (Use the probability tuples of each column trained individually as input of a text classifier and use that as an input to a random forest/XGBoost... and then predict the labels)
 - How do we measure the actual and predicted trends (average of 30 or 60d adjusted close) (since sporadic jumps in the market are not relevant for long term investors which are the target group of readers); for trend 6% and for actual 2% to be considered sideways movement
