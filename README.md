@@ -18,7 +18,7 @@ An university research project on Natural Language Processing (NLP), Data Mining
 
 
 # Introduction
-In this project, we obtain financial research containing both, a report in natural language and a quantifiable prediction on the underlying asset. We further analyze the predictions and analyze the texts and data in order to improve the analysts accuracy - our benchmark. To do so we build basic metrics regarding the texts, but also classification models based on large language models (LLMs). We focus on the (subjective) analyst note and (objective) bull and bear arguments. We can show that the analysts forecasts are merely based on chance. And by leveraging the classifications of our fine-tuned LLM, and the confidence in its predictions, our model outperforms the analysts steadily and shows significant predictive qualities -- while using the analysts own words.
+In this project, we obtain financial research containing both, a report in natural language and a quantifiable prediction on the underlying asset. We further analyze the predictions and analyze the texts and data in order to improve the analysts accuracy - our benchmark. To do so we build basic metrics regarding the texts, but also classification models based on large language models (LLMs). We focus on the (subjective) analyst note and (objective) bull and bear arguments. We can show that the analysts forecasts are merely based on chance. And by leveraging the classifications of our fine-tuned LLM, and the confidence in its predictions, our model outperforms the analysts steadily and shows significant predictive qualities - while using the analysts own words.
 
 # Data Sources
 There are two data sources used in this project:
@@ -113,43 +113,49 @@ We can then parse the OHLCV data (Open High Low Close Volume) on all different c
 
 ## Data Analysis
 The Jupyter Notebook [3. Data Analysis](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/3.%20Data%20Analysis.ipynb) shows a preliminary and superficial approach how to design targets (like accuracy) and features (metrics based on text) and their dedicated correlations.
-
+We start by providing some intuition on the texts and create word clouds on the Bull and Bear arguments:
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="380"/>
 
+We furthermore create knowledge graphs based on word association. But since the amount of words and thus associations is too overwhelming, we also export them as interactive networks for both [Bulls](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/Plots/Bulls.html) and [Bears](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/Plots/Bears.html).
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bulls_network.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bears_network.png" alt="isolated" width="380"/> 
+
+Finally we check whether the stock is growing ```(1)```, constant ```(0)``` or falling ```(-1)``` for two points of time: at release of report and 30d/60d after. We also design a binary variable in the same way whether the analyst estimates the stock to grow, fall or move sideways. This enables us to design our desired Targets and also obtain some basic metrics:
+- Trend of predictions
+- Accuracy of predictions 
+- And whether the accuracy is dependent on the prediction itself
+
+We also count and normalize special words to create features: buzzwords, negations, superlatives and comparatives, the use of active and passive. And we discretize the reports information on economic moat, uncertainty and star rating, to finally create a heatmap of correlations:
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/correlation_matrix.png" alt="isolated" width="760"/> 
 
-
-
-
+Unfortunately the result doesn't provide us with new insights. The correlation between rating and prediction was expected - the same for 30d and 60d trends. So only uncertainty and economic moat have a slight inverse correlation, that is intuitive but was not clear from the beginning.
 
 ## Model Building and Benchmarking
-The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the authors confidence and use of causal language. 
+The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the probabilities of the predictions.
 
+But let us first define an approach of evaluation and benchmarking: In order to validate learned models we compare predictions made from the model with previously separated test data. In this way, we can objectively evaluate them according to their predictive qualities. For this comparison, we utilize these fundamental principles: _Sensitivity_ or true positive rate ($TPR$) is derived from the true positives $TP$,  i.e., the correctly identified positives $P$ from the test set: 
+$$TPR=\frac{TP}{P}$$
+_Specificity_ or true negative rate ($TNR$) is derived from the true negatives $TN$,  i.e., the correctly identified negatives $N$ from the test set: 
+$$TNR=\frac{TN}{N}$$
 
-In order to validate learned models -- here the Bayesian networks -- we compare predictions made from the model with previously separated test data. In this way, we can objectively evaluate them according to their predictive qualities. For this comparison, we utilise these fundamental principles:
-\newline \textit{Sensitivity} or true positive rate ($\mathrm{TPR}$) is derived from the true positives $\mathrm{TP}$,  i.e., the correctly identified positives $\mathrm{P}$ from the test set: 
-$
-\mathrm{TPR}=\frac{\mathrm{TP}}{\mathrm{P}}
-$
-\newline \textit{Specificity} or true negative rate ($\mathrm{TNR}$) is derived from the true negatives $\mathrm{TN}$,  i.e., the correctly identified negatives $\mathrm{N}$ from the test set: 
-$
-\mathrm{TNR}=\frac{\mathrm{TN}}{\mathrm{N}}
-$
-\newline By plotting both the sensitivity and specificity in relation, we obtain the so called Receiver Operating Curve (ROC). For the results of both measures 1 or 100\% is the optimum, and if the curve is the diagonal, we observed a random process.  In Figure~\ref{fig:exroc}, we can see some common examples of curves. In order to further summarise these evaluations, we can calculate the Area Under the Curve (AUC) to rank the models. Again, a value of 0.5 indicates a random process. 
+Since both rates have an inverse relationship depending on the threshold we set (meaning if we want to increase one of them, the other will decrease), we can plot them against each other.  By plotting both the sensitivity and specificity in relation, we obtain the so called Receiver Operating Curve (ROC). For the results of both measures 1 or 100\% is the optimum, and if the curve is the diagonal, we observed a random process.  In the figure below, we can see some common examples of curves. In order to further summarize these evaluations, we can calculate the Area Under the Curve (AUC) to rank the models. Again, a value of 0.5 indicates a random process. 
+
+We use this approach since it is resilient against unevenly distributed data sets.
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/main/Plots/ROC.png" alt="isolated" width="380"/> 
 
-- Explain methodology for ROC Curves and why they are better (no even distribution etc)
+To discretize our data and obtain binary values, we build to groups: ```1``` signifying an upwards trend above an certain threshold and ```0``` standing for both sideways and downwards movements of the stock (we group these two into one, because most stocks are predicted to have an upwards trend and also actually move in that direction).
 
-- Explain how the probabilities are used to improve the result and what else one could try in the future (Use the probability tuples of each column trained individually as input of a text classifier and use that as an input to a random forest/XGBoost... and then predict the labels)
+For our both points in time we set different thresholds though: the analysts predictions are for _investment_ decisions, meaning for a long time horizon. Thus, a _buy_ signal is defined as a fair price of at least 6% more than the current price at the time. But for the actual trend after 60 days, we set the threshold at 2%, since it is a very short period. So a stock that only grew 1% in the 60 days is classified as a sideway movement, thus ```0```.
+Furthermore we use the concept of moving averages for our trend calculations, since we do not want to include sporadic jumps in the market which are not relevant for long term investors - the target group of the reports readers. That's why the trend is defined as the mean of those 60 days.
 
-- How do we measure the actual and predicted trends (average of 30 or 60d adjusted close) (since sporadic jumps in the market are not relevant for long term investors which are the target group of readers); for trend 6% and for actual 2% to be considered sideways movement
-
+Our model is based on the smallest BERT model and fine tuned on our training data. Since the predictions show a strong one sided distribution (almost exclusively ```1``` as label) - reproducing the actual distribution, we follow a more nuanced approach of assigning the final labels: We use the probabilities (the models confidence in the prediction) to re-classify our results. If the probability of ```0``` is above average, we assign that label, and vice versa for ```1```.  
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/ROC_curves_prediction.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/ROC_curves_actual.png" alt="isolated" width="380"/> 
+This means, we have two highly interesting results in our analysis:
+1. It is significant more reliable to predict the actual stock movement based on the analysts text, than to predict his buy or sell recommendation
+1. While the analysts themselves seem to only decide by chance whether to buy or sell, they have all the information and arguments to actually come up with a better prediction. Because we can significantly improve the accuracy by learning our model on their analyst notes!
 
 # Results and Conclusion
-We were able to obtain interesting insights in the structure and thought process behind the reports and could also benchmark the analysts. We showed that one can predict the actual stock trend better than the analysts themselves. And also that the analysts come up with very well formulated arguments for or against the stock, but give the wrong recommendation and only mimic the underlying distribution of the current market.
+We were able to obtain interesting insights in the structure and thought process behind the reports and could also benchmark the analysts. We showed that one can predict the actual stock trend better than the analysts themselves. And also that the analysts come up with very well formulated arguments for or against the stock, but give the wrong recommendation and only mimic the underlying distribution of the current market. For the future it will be interesting to combine multiple texts from our source and other sources and maybe add an additional layer to use the probability tuples of each individually trained classifier as input of a final layer like a random forest/XGBoost... and then predict the labels.
