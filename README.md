@@ -52,7 +52,15 @@ ToDO:
 - Re-run all notebooks with png as export as well
 
 
-<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="360"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="360"/>
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="380"/>
+
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bears_network.png" alt="isolated" width="380"/> 
+
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/correlation_matrix.png" alt="isolated" width="760"/> 
+
+
+
+
 
 ## Model Building and Benchmarking
 The final Jupyter Notebook [4. Model Building](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/4.%20Model%20Building.ipynb) show more refined approaches of how to predict the analysts estimate, the actual trend and the authors confidence and use of causal language. 
@@ -60,6 +68,9 @@ TODO_
 - Explain methodology for ROC Curves and why they are better (no even distribution etc)
 - Explain how the probabilities are used to improve the result and what else one could try in the future (Use the probability tuples of each column trained individually as input of a text classifier and use that as an input to a random forest/XGBoost... and then predict the labels)
 - How do we measure the actual and predicted trends (average of 30 or 60d adjusted close) (since sporadic jumps in the market are not relevant for long term investors which are the target group of readers); for trend 6% and for actual 2% to be considered sideways movement
+
+
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/ROC_curves_prediction.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/ROC_curves_actual.png" alt="isolated" width="380"/> 
 
 # Results and Conclusion
 We were able to obtain interesting insights in the structure and thought process behind the reports and could also benchmark the analysts. We showed that one can predict the actual stock trend better than the analysts themselves. And also that the analysts come up with very well formulated arguments for or against the stock, but give the wrong recommendation and only mimic the underlying distribution of the current market.
