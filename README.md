@@ -54,7 +54,7 @@ ToDO:
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="380"/>
 
-<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bears_network.png" alt="isolated" width="380"/> 
+<img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bulls_network.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/Bears_network.png" alt="isolated" width="380"/> 
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/ff81fa24b619a7ed5ca76bd925821c3d9c9fb1d4/Plots/correlation_matrix.png" alt="isolated" width="760"/> 
 
