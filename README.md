@@ -96,15 +96,23 @@ headers = {
 }
 ```
 
-- Explain how data acquisition works and How do we set up the connection via cookie handshake?
 
 ## Data Merge
-Unfortunately the ```TickerSymbol``` of the analyst report is not specific enough. Thats why the Jupyter Notebook [2. Data Merge](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/2.%20Data%20Merge.ipynb) shows a detailed approach how to find the actual ticker symbols and since the yahoo API has reliability issues, this is executed in batches and the intermediate results are stored in 'TickerLists'.
+Unfortunately the ```TickerSymbol``` of the analyst report is not specific enough. Thats why the Jupyter Notebook [2. Data Merge](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/e2b421149b506df3004cbe21ee8ec53f33352a56/2.%20Data%20Merge.ipynb) shows a detailed approach how to find the actual ticker symbols.  E.g.: "Central Japan Railway Co" has Ticker ```9022```, but is only callable by ```9022.T``` (traded at _Tokyo_ exchange)
+Our approach:
+- Finding the underlying Ticker symbol based on the names (which are definitely clean)
+- We do this by scraping Yahoo Finance search results and select the most likely result based on:
+    - Highest traded volume (meaning if others think this is *the* company, so do we) 
+    - Matching currency
+    - Had round about the same (adjusted close) price as the analyst reports state
+
+This works, as yahoo finance only returns results that definitely fit. The additional criteria are necessary since the same stock can be traded at multiple exchanges and also OTC (over the counter, not public). With the additional criteria and some cleaning of the names and currencies we can achieve a high success rate and only lose less than 2% of the results (some of them because the company is delisted and can no longer be traded).
+
+But since the yahoo API has reliability issues, this is executed in batches and the intermediate results are stored in ['TickerLists'](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/7001526eac8ff0546cb8925c72620b9aac6c098f/Data/Analyst%20Reports/TickerLists).
+We can then parse the OHLCV data (Open High Low Close Volume) on all different companies for 30 and 60 days and store them as JSON and CSV [files](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/Data/Market%20Data) and also safe the merged data as a CSV [table](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/b53f1ff07b1db0ab2db573ed40a8d9dcf192a6c2/Data/final_data.csv).
 
 ## Data Analysis
 The Jupyter Notebook [3. Data Analysis](https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/5244627ee13270a4965ce6d756ce2d5a4f35ce44/3.%20Data%20Analysis.ipynb) shows a preliminary and superficial approach how to design targets (like accuracy) and features (metrics based on text) and their dedicated correlations.
-ToDO:
-- Re-run all notebooks with png as export as well
 
 
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bulls_WordCloud.png" alt="isolated" width="380"/> <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/536c21c931660d818339fa48b3c223f640383bc4/Plots/Bears_WordCloud.png" alt="isolated" width="380"/>
@@ -135,7 +143,9 @@ $
 <img src="https://github.com/trashpanda-ai/Analyst-Reports-NLP-/blob/main/Plots/ROC.png" alt="isolated" width="380"/> 
 
 - Explain methodology for ROC Curves and why they are better (no even distribution etc)
+
 - Explain how the probabilities are used to improve the result and what else one could try in the future (Use the probability tuples of each column trained individually as input of a text classifier and use that as an input to a random forest/XGBoost... and then predict the labels)
+
 - How do we measure the actual and predicted trends (average of 30 or 60d adjusted close) (since sporadic jumps in the market are not relevant for long term investors which are the target group of readers); for trend 6% and for actual 2% to be considered sideways movement
 
 
