@@ -18,7 +18,7 @@ An university research project on Natural Language Processing (NLP), Data Mining
 
 
 # Introduction
-In this project, we obtain financial research containing both, a report in natural language and a quantifiable prediction on the underlying asset. We further analyze the predictions and analyze the texts and data in order to improve the analysts accuracy - our benchmark. To do so we build basic metrics regarding the texts, but also classification models based on large language models (LLMs). We focus on the (subjective) analyst note and (objective) bull and bear arguments. We can show that the analysts forecasts are merely based on chance. And by leveraging the classifications of our fine-tuned LLM, and the confidence in its predictions, our model outperforms the analysts steadily and shows significant predictive qualities - while using the analysts own words.
+In this project, we obtain financial research containing both, a report in natural language and a quantifiable prediction on the underlying asset. We further analyze the predictions and analyze the texts and data in order to improve the analysts accuracy – our benchmark. To do so we build basic metrics regarding the texts, but also classification models based on large language models (LLMs). We focus on the (subjective) analyst note and (objective) bull and bear arguments. We can show that the analysts forecasts are merely based on chance. And by leveraging the classifications of our fine-tuned LLM, and the confidence in its predictions, our model outperforms the analysts steadily and shows significant predictive qualities – while using the analysts own words.
 
 # Data Sources
 There are two data sources used in this project:
@@ -33,9 +33,9 @@ To better analyze the financial reports and identify the analysts accuracy, we u
 
 # Motivation and Objective
 
->"There are three ways to make a living in this business: be first; be smarter; or cheat. Now, I don't cheat. And although I like to think we have some pretty smart people in this building, it sure is a hell of a lot easier to just be first." - John Tuld, fictional character in 'Margin Call' (2011)
+>"There are three ways to make a living in this business: be first; be smarter; or cheat. Now, I don't cheat. And although I like to think we have some pretty smart people in this building, it sure is a hell of a lot easier to just be first." – John Tuld, fictional character in 'Margin Call' (2011)
 
-But to be first - in this analogy of margin call - you need to either be located on the stock exchange and have the fastest connection or you have to create your own signal. This is why we try to find a unique pattern of hidden information in the text data.
+But to be first – in this analogy of margin call – you need to either be located on the stock exchange and have the fastest connection or you have to create your own signal. This is why we try to find a unique pattern of hidden information in the text data.
 
 
 # Approach
